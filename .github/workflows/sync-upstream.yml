@@ -1,0 +1,34 @@
+name: Check upstream
+# Fetch only. Never merges or pushes: upstream commits are unvetted (see CUSTOMIZATIONS.md).
+on:
+  schedule:
+    - cron: '0 9 * * 1'  # Monday 09:00 UTC
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
+      - name: Report new upstream commits
+        run: |
+          git remote add upstream https://github.com/gargpratyush/jev-router.git
+          git fetch upstream
+          {
+            echo "## Upstream check for gargpratyush/jev-router"
+            echo "Vetted commit: 38da6b84ea01241bfc41fbddc0928d0f40a703f0"
+            echo
+            if git merge-base --is-ancestor upstream/master HEAD; then
+              echo "No new upstream commits."
+            else
+              echo "New upstream commits (unvetted, review before merging):"
+              git log --oneline HEAD..upstream/master | head -50
+              echo
+              echo "Files changed since the vetted commit:"
+              git diff --stat 38da6b84ea01241bfc41fbddc0928d0f40a703f0..upstream/master | tail -60
+            fi
+          } | tee -a "$GITHUB_STEP_SUMMARY"

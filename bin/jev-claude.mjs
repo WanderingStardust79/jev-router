@@ -73,7 +73,6 @@ function statusLineArgs() {
 // Existing environment variables win, followed by project-local, shared user-level, then
 // the legacy Claude-specific file.
 for (const file of [
-  join(process.cwd(), ".env"),
   join(homedir(), ".jev-router.env"),
   join(homedir(), ".jev-claude.env"),
 ]) {
