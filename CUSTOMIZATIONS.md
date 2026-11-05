@@ -8,6 +8,7 @@ Adopted 2026-10-04. Security vetted at upstream commit `38da6b84ea01241bfc41fbdd
 
 - 2026-10-04: `CUSTOMIZATIONS.md`, `.github/workflows/sync-upstream.yml`: added by repo-adopt. Sync is fetch only (see below).
 - 2026-10-04: `bin/jev-claude.mjs`, `src/codex-cli.mjs`: removed the launch directory `.env` source so a hostile repo cannot redirect prompts or the key via TYPESAFE_BASE_URL (vetting required patch). `package.json`, `package-lock.json`: pinned `@typesafe-ai/sdk` to exactly 0.6.0. Tests: 64 pass, 1 skipped.
+- 2026-11-05: default branch set to `mattb/main` so the weekly `Check upstream` schedule fires (GitHub runs schedules only from the default branch). Deleted upstream `.github/workflows/test.yml` here. Actions limited to `actions/checkout@*`. `master` stays the clean upstream mirror.
 
 ## Syncing upstream
 
